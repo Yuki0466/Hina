@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物车 - 精品商城</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h2>精品商城</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="products.html" class="nav-link">产品</a>
+                <a href="cart.html" class="nav-link active">购物车</a>
+                <a href="profile.html" class="nav-link">个人中心</a>
+            </div>
+            <div class="nav-actions">
+                <button class="search-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="cart-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" x2="21" y1="6" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 页面标题 -->
+        <section class="page-header">
+            <div class="container">
+                <h1>购物车</h1>
+                <p>管理您的购物车商品</p>
+            </div>
+        </section>
+
+        <!-- 购物车内容 -->
+        <section class="cart-section">
+            <div class="container">
+                <div class="cart-container">
+                    <!-- 购物车商品列表 -->
+                    <div class="cart-items">
+                        <div class="cart-header">
+                            <h2>购物车商品</h2>
+                            <button id="clearCartBtn" class="btn-secondary">清空购物车</button>
+                        </div>
+                        <div id="cartItemsList">
+                            <!-- 购物车商品将通过 JavaScript 动态加载 -->
+                        </div>
+                        <div id="emptyCart" class="empty-cart" style="display: none;">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                <line x1="3" x2="21" y1="6" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                            <h3>购物车是空的</h3>
+                            <p>去添加一些您喜欢的商品吧！</p>
+                            <a href="products.html" class="btn-primary">去购物</a>
+                        </div>
+                    </div>
+
+                    <!-- 订单汇总 -->
+                    <div class="cart-summary">
+                        <div class="summary-card">
+                            <h3>订单汇总</h3>
+                            <div class="summary-item">
+                                <span>商品总数：</span>
+                                <span id="totalItems">0</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>商品小计：</span>
+                                <span id="subtotal">¥0.00</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>运费：</span>
+                                <span id="shipping">¥0.00</span>
+                            </div>
+                            <div class="summary-item discount">
+                                <span>优惠折扣：</span>
+                                <span id="discount">-¥0.00</span>
+                            </div>
+                            <div class="summary-divider"></div>
+                            <div class="summary-item total">
+                                <span>总计：</span>
+                                <span id="total">¥0.00</span>
+                            </div>
+                            
+                            <!-- 优惠券 -->
+                            <div class="coupon-section">
+                                <input type="text" id="couponCode" placeholder="输入优惠券码">
+                                <button id="applyCouponBtn" class="btn-secondary">应用</button>
+                            </div>
+                            
+                            <!-- 结算按钮 -->
+                            <button id="checkoutBtn" class="btn-primary btn-large">立即结算</button>
+                            
+                            <!-- 推荐商品 -->
+                            <div class="recommended-products">
+                                <h4>您可能还喜欢</h4>
+                                <div id="recommendedProducts">
+                                    <!-- 推荐商品将通过 JavaScript 动态加载 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>精品商城</h3>
+                    <p>为您提供优质的生活用品</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="products.html">所有产品</a></li>
+                        <li><a href="cart.html">购物车</a></li>
+                        <li><a href="profile.html">个人中心</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>客户服务</h4>
+                    <ul>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">退换货政策</a></li>
+                        <li><a href="#">配送信息</a></li>
+                        <li><a href="#">常见问题</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关注我们</h4>
+                    <div class="social-links">
+                        <a href="#">微信</a>
+                        <a href="#">微博</a>
+                        <a href="#">抖音</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 精品商城. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/cart-page.js"></script>
+</body>
+</html>

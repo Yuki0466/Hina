@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 精品商城</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h2>精品商城</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="products.html" class="nav-link">产品</a>
+                <a href="cart.html" class="nav-link">购物车</a>
+                <a href="profile.html" class="nav-link active">个人中心</a>
+            </div>
+            <div class="nav-actions">
+                <button class="search-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="cart-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" x2="21" y1="6" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 页面标题 -->
+        <section class="page-header">
+            <div class="container">
+                <h1>个人中心</h1>
+                <p>管理您的账户和订单</p>
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <div class="container">
+                <div class="profile-container">
+                    <!-- 侧边导航 -->
+                    <div class="profile-sidebar">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=150&q=80" alt="用户头像">
+                            </div>
+                            <div class="user-details">
+                                <h3 id="userName">用户名</h3>
+                                <p id="userEmail">user@example.com</p>
+                            </div>
+                        </div>
+                        
+                        <nav class="profile-nav">
+                            <ul>
+                                <li><a href="#dashboard" class="nav-item active" data-tab="dashboard">仪表板</a></li>
+                                <li><a href="#orders" class="nav-item" data-tab="orders">我的订单</a></li>
+                                <li><a href="#profile" class="nav-item" data-tab="profile">个人信息</a></li>
+                                <li><a href="#addresses" class="nav-item" data-tab="addresses">收货地址</a></li>
+                                <li><a href="#favorites" class="nav-item" data-tab="favorites">收藏夹</a></li>
+                                <li><a href="#settings" class="nav-item" data-tab="settings">账户设置</a></li>
+                            </ul>
+                        </nav>
+                        
+                        <button id="logoutBtn" class="btn-logout">退出登录</button>
+                    </div>
+
+                    <!-- 主要内容区 -->
+                    <div class="profile-main">
+                        <!-- 仪表板 -->
+                        <div id="dashboard" class="tab-content active">
+                            <h2>欢迎回来！</h2>
+                            <div class="dashboard-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M9 11 12 14 22 4"></path>
+                                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3 id="totalOrders">0</h3>
+                                        <p>总订单数</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3 id="totalSpent">¥0.00</h3>
+                                        <p>总消费金额</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3 id="favoriteCount">0</h3>
+                                        <p>收藏商品</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 最近订单 -->
+                            <div class="recent-orders">
+                                <h3>最近订单</h3>
+                                <div id="recentOrdersList">
+                                    <!-- 最近订单将通过 JavaScript 动态加载 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 我的订单 -->
+                        <div id="orders" class="tab-content">
+                            <h2>我的订单</h2>
+                            <div class="orders-filter">
+                                <select id="orderStatusFilter">
+                                    <option value="">所有状态</option>
+                                    <option value="pending">待付款</option>
+                                    <option value="processing">处理中</option>
+                                    <option value="shipped">已发货</option>
+                                    <option value="delivered">已送达</option>
+                                    <option value="cancelled">已取消</option>
+                                </select>
+                            </div>
+                            <div id="ordersList">
+                                <!-- 订单列表将通过 JavaScript 动态加载 -->
+                            </div>
+                        </div>
+
+                        <!-- 个人信息 -->
+                        <div id="profile" class="tab-content">
+                            <h2>个人信息</h2>
+                            <form id="profileForm" class="profile-form">
+                                <div class="form-group">
+                                    <label for="firstName">名字</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">姓氏</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">邮箱</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">手机号</label>
+                                    <input type="tel" id="phone" name="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthday">生日</label>
+                                    <input type="date" id="birthday" name="birthday">
+                                </div>
+                                <button type="submit" class="btn-primary">保存更改</button>
+                            </form>
+                        </div>
+
+                        <!-- 收货地址 -->
+                        <div id="addresses" class="tab-content">
+                            <div class="addresses-header">
+                                <h2>收货地址</h2>
+                                <button id="addAddressBtn" class="btn-primary">添加地址</button>
+                            </div>
+                            <div id="addressesList">
+                                <!-- 地址列表将通过 JavaScript 动态加载 -->
+                            </div>
+                        </div>
+
+                        <!-- 收藏夹 -->
+                        <div id="favorites" class="tab-content">
+                            <h2>我的收藏</h2>
+                            <div id="favoritesList" class="product-grid">
+                                <!-- 收藏商品将通过 JavaScript 动态加载 -->
+                            </div>
+                        </div>
+
+                        <!-- 账户设置 -->
+                        <div id="settings" class="tab-content">
+                            <h2>账户设置</h2>
+                            <div class="settings-section">
+                                <h3>安全设置</h3>
+                                <button id="changePasswordBtn" class="btn-secondary">修改密码</button>
+                            </div>
+                            <div class="settings-section">
+                                <h3>通知设置</h3>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="emailNotifications">
+                                        接收邮件通知
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="smsNotifications">
+                                        接收短信通知
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="settings-section">
+                                <h3>隐私设置</h3>
+                                <button id="deleteAccountBtn" class="btn-danger">删除账户</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>精品商城</h3>
+                    <p>为您提供优质的生活用品</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="products.html">所有产品</a></li>
+                        <li><a href="cart.html">购物车</a></li>
+                        <li><a href="profile.html">个人中心</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>客户服务</h4>
+                    <ul>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">退换货政策</a></li>
+                        <li><a href="#">配送信息</a></li>
+                        <li><a href="#">常见问题</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关注我们</h4>
+                    <div class="social-links">
+                        <a href="#">微信</a>
+                        <a href="#">微博</a>
+                        <a href="#">抖音</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 精品商城. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 地址模态框 -->
+    <div id="addressModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>添加收货地址</h3>
+            <form id="addressForm">
+                <div class="form-group">
+                    <label for="addressName">收货人姓名</label>
+                    <input type="text" id="addressName" required>
+                </div>
+                <div class="form-group">
+                    <label for="addressPhone">手机号</label>
+                    <input type="tel" id="addressPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="province">省份</label>
+                    <input type="text" id="province" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">城市</label>
+                    <input type="text" id="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="district">区县</label>
+                    <input type="text" id="district" required>
+                </div>
+                <div class="form-group">
+                    <label for="streetAddress">详细地址</label>
+                    <textarea id="streetAddress" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="isDefault">
+                        设为默认地址
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary">保存地址</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>
