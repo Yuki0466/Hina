@@ -259,6 +259,11 @@ window.db = new DatabaseService();
 // 初始化示例数据（仅在使用本地存储时）
 if (!window.supabase) {
     db.initSampleData = function() {
+        // 检查是否已有数据
+        const existingProducts = localStorage.getItem(db.storagePrefix + 'products');
+        if (existingProducts) {
+            return; // 已有数据，不重复初始化
+        }
         // 初始化分类数据
         const categories = [
             { id: '1', name: '电子产品', icon: '💻', description: '智能手机、平板电脑等' },
