@@ -1,0 +1,5 @@
+# Keep the root directory clean by ignoring itself
+# Only track the public/ directory
+/*
+!public/
+!/public/
