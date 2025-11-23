@@ -1,20 +1,49 @@
 // 购物车页面专用脚本
 // 这个文件在 cart.html 中加载，用于处理购物车页面的特定功能
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // 等待购物车服务初始化完成
+    await waitForCartInitialization();
+    
     // 初始化购物车页面
     initCartPage();
 });
 
+// 等待购物车服务初始化
+function waitForCartInitialization() {
+    return new Promise((resolve) => {
+        const checkInterval = setInterval(() => {
+            if (window.cart && window.cart.cartItems !== undefined) {
+                clearInterval(checkInterval);
+                resolve();
+            }
+        }, 100);
+        
+        // 超时保护
+        setTimeout(() => {
+            clearInterval(checkInterval);
+            console.warn('购物车初始化超时，强制继续');
+            resolve();
+        }, 5000);
+    });
+}
+
 function initCartPage() {
+    console.log('购物车页面初始化开始');
+    
+    // 确保购物车数据已加载
+    window.cart.loadCart();
+    
     // 绑定事件监听器
     bindCartPageEvents();
+    
+    // 初始化购物车显示
+    window.cart.updateCartUI();
     
     // 加载推荐商品
     loadRecommendedProducts();
     
-    // 初始化购物车显示
-    window.cart.updateCartUI();
+    console.log('购物车页面初始化完成，购物车商品数量:', window.cart.cartItems.length);
 }
 
 // 绑定购物车页面特定事件

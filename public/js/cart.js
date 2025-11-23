@@ -10,6 +10,7 @@ class CartService {
     init() {
         this.loadCart();
         this.updateCartUI();
+        console.log('购物车初始化完成，商品数量:', this.cartItems.length, '商品:', this.cartItems);
     }
 
     // 加载购物车数据
@@ -17,6 +18,10 @@ class CartService {
         const cartData = localStorage.getItem(this.cartKey);
         if (cartData) {
             this.cartItems = JSON.parse(cartData);
+            console.log('从localStorage加载购物车数据:', this.cartItems);
+        } else {
+            this.cartItems = [];
+            console.log('购物车为空，没有找到本地数据');
         }
     }
 
