@@ -32,7 +32,6 @@ class CartService {
             
             // 获取产品信息
             const productResult = await window.db.getProductById(productId);
-            console.log('产品查询结果:', productResult);
             
             if (productResult.error) {
                 console.error('产品查询错误:', productResult.error);
@@ -46,10 +45,16 @@ class CartService {
                 const allProducts = await window.db.getProducts();
                 console.log('所有可用产品:', allProducts);
                 
+                // 显示所有产品ID用于调试
+                if (allProducts.data && allProducts.data.length > 0) {
+                    console.log('所有产品ID:', allProducts.data.map(p => ({ id: p.id, name: p.name })));
+                }
+                
                 throw new Error(`产品不存在 (ID: ${productId})`);
             }
 
             const product = productResult.data;
+            console.log('成功获取产品信息:', product);
 
             // 检查是否已在购物车中
             const existingItem = this.cartItems.find(item => item.product_id === productId);

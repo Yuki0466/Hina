@@ -131,7 +131,17 @@ class DatabaseService {
 
     async getProductById(id) {
         const result = await this.handleRequest('select', 'products', null, { filters: { id } });
-        return result.data?.[0] || null;
+        console.log(`查找产品 ID ${id}:`, result);
+        
+        if (result.error) {
+            console.error('数据库查询错误:', result.error);
+            return { data: null, error: result.error };
+        }
+        
+        const product = result.data?.[0] || null;
+        console.log(`找到产品:`, product);
+        
+        return { data: product, error: result.error };
     }
 
     async getProductsByCategory(categoryId) {
