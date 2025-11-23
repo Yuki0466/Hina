@@ -259,11 +259,6 @@ window.db = new DatabaseService();
 // 初始化示例数据（仅在使用本地存储时）
 if (!window.supabase) {
     db.initSampleData = function() {
-        // 检查是否已有数据
-        const existingProducts = localStorage.getItem(db.storagePrefix + 'products');
-        if (existingProducts) {
-            return; // 已有数据，不重复初始化
-        }
         // 初始化分类数据
         const categories = [
             { id: '1', name: '电子产品', icon: '💻', description: '智能手机、平板电脑等' },
@@ -342,16 +337,37 @@ if (!window.supabase) {
                 stock: 60,
                 featured: false,
                 created_at: new Date().toISOString()
+            },
+            {
+                id: '7',
+                name: '笔记本电脑',
+                description: '轻薄便携，高性能处理器，适合办公和娱乐',
+                price: 6999,
+                category_id: '1',
+                image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
+                stock: 15,
+                featured: true,
+                created_at: new Date().toISOString()
+            },
+            {
+                id: '8',
+                name: '运动T恤',
+                description: '速干材质，透气舒适，适合运动和日常穿着',
+                price: 99,
+                category_id: '2',
+                image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
+                stock: 80,
+                featured: true,
+                created_at: new Date().toISOString()
             }
         ];
         localStorage.setItem(db.storagePrefix + 'products', JSON.stringify(products));
+        
+        console.log('示例数据初始化完成:', { categories: categories.length, products: products.length });
     };
 
-    // 检查是否需要初始化数据
-    const existingProducts = localStorage.getItem(db.storagePrefix + 'products');
-    const existingCategories = localStorage.getItem(db.storagePrefix + 'categories');
-    
-    if (!existingProducts || !existingCategories) {
-        db.initSampleData();
-    }
+    // 强制初始化数据（删除旧数据重新创建）
+    localStorage.removeItem(db.storagePrefix + 'products');
+    localStorage.removeItem(db.storagePrefix + 'categories');
+    db.initSampleData();
 }

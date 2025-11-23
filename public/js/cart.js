@@ -28,10 +28,25 @@ class CartService {
     // 添加商品到购物车
     async addToCart(productId, quantity = 1) {
         try {
+            console.log('尝试添加产品到购物车:', productId);
+            
             // 获取产品信息
             const productResult = await window.db.getProductById(productId);
-            if (productResult.error || !productResult.data) {
-                throw new Error('产品不存在');
+            console.log('产品查询结果:', productResult);
+            
+            if (productResult.error) {
+                console.error('产品查询错误:', productResult.error);
+                throw new Error('产品查询失败: ' + productResult.error.message);
+            }
+            
+            if (!productResult.data) {
+                console.error('产品不存在，ID:', productId);
+                
+                // 调试：列出所有可用的产品
+                const allProducts = await window.db.getProducts();
+                console.log('所有可用产品:', allProducts);
+                
+                throw new Error(`产品不存在 (ID: ${productId})`);
             }
 
             const product = productResult.data;
