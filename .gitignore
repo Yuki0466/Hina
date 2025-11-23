@@ -1,5 +1,6 @@
-# Keep the root directory clean by ignoring itself
-# Only track the public/ directory
+# Keep the root directory clean but allow important config files
+# Track the public/ directory and key config files
 /*
 !public/
+!netlify.toml
 !/public/
