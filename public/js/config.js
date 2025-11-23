@@ -32,9 +32,16 @@ const CONFIG = {
 let supabase;
 
 try {
+    // 检查配置是否为占位符
+    if (CONFIG.SUPABASE_URL.includes('your-project-id') || CONFIG.SUPABASE_ANON_KEY.includes('your-supabase-anon-key-here')) {
+        throw new Error('请配置真实的 Supabase 凭据');
+    }
+    
     supabase = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+    console.log('Supabase 客户端初始化成功');
 } catch (error) {
     console.warn('Supabase 客户端初始化失败，将使用本地存储模式:', error);
+    console.warn('请参考 DATABASE-SETUP.md 配置正确的 Supabase 凭据');
 }
 
 // 导出配置
